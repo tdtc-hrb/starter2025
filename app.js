@@ -1,16 +1,33 @@
 import { createStore } from 'redux';
-
-const reducer = (state, action) =>
-	action.type === 'INC'
-		? state + 1
-		: state;
+import { ElementaryArithmetic as myReducer } from './reducers/elementaryArithmetic';
 
 const initialState = 0;
 
-const store = createStore(reducer, initialState);
+const store = createStore(myReducer, initialState);
 
-store.subscribe(() => document.getElementById('counter').innerText = store.getState());
+const myCounter = document.getElementById('counter');
 
-setInterval(() => store.dispatch({ type: 'INC' }), 500);
+// Set convention
+store.subscribe(
+    () =>
+    {
+        let displayFormat = store.getState();
+        myCounter.innerText = displayFormat;
+    }
+);
+
+let iCounter = 1;
 
 console.log("Redux started");
+
+setInterval(
+    () => {
+        console.log("1000 ms x " + iCounter);
+
+        // update state
+        store.dispatch({ type: 'INC' });
+
+        iCounter++;
+    },
+    500
+);
